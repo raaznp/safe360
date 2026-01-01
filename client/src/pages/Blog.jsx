@@ -22,7 +22,7 @@ const Blog = () => {
         const fetchPosts = async () => {
             setLoading(true);
             try {
-                let url = `http://localhost:5001/api/blog?page=${page}&limit=12`;
+                let url = `/api/blog?page=${page}&limit=12`;
                 if (tag) url += `&tag=${encodeURIComponent(tag)}`;
                 if (author) url += `&author=${encodeURIComponent(author)}`;
 

@@ -19,7 +19,7 @@ const AdminCareers = () => {
 
     const fetchJobs = async () => {
         try {
-            const res = await fetch('http://localhost:5001/api/careers/all', {
+            const res = await fetch('/api/careers/all', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();

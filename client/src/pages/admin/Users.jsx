@@ -14,7 +14,7 @@ const Users = () => {
 
     const fetchUsers = async () => {
         try {
-            const res = await fetch('http://localhost:5001/api/users', {
+            const res = await fetch('/api/users', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -33,8 +33,8 @@ const Users = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const url = editingId
-            ? `http://localhost:5001/api/users/${editingId}`
-            : 'http://localhost:5001/api/users';
+            ? `/api/users/${editingId}`
+            : '/api/users';
 
         const method = editingId ? 'PUT' : 'POST';
 
@@ -62,7 +62,7 @@ const Users = () => {
     const handleDelete = async (id) => {
         if (window.confirm('Are you sure you want to delete this user?')) {
             try {
-                await fetch(`http://localhost:5001/api/users/${id}`, {
+                await fetch(`/api/users/${id}`, {
                     method: 'DELETE',
                     headers: { Authorization: `Bearer ${token}` }
                 });

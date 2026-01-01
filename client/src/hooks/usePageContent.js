@@ -8,7 +8,7 @@ const usePageContent = (slug) => {
     useEffect(() => {
         const fetchPage = async () => {
             try {
-                const res = await fetch(`http://localhost:5001/api/pages/${slug}`);
+                const res = await fetch(`/api/pages/${slug}`);
                 if (!res.ok) {
                     throw new Error('Failed to fetch page content');
                 }

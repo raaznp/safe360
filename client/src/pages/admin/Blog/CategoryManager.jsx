@@ -22,7 +22,7 @@ const CategoryManager = () => {
     const fetchCategories = async () => {
         setLoading(true);
         try {
-            const res = await fetch('http://localhost:5001/api/categories', {
+            const res = await fetch('/api/categories', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -60,8 +60,8 @@ const CategoryManager = () => {
             : formData.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
 
         const url = isEditing 
-            ? `http://localhost:5001/api/categories/${editId}` 
-            : 'http://localhost:5001/api/categories';
+            ? `/api/categories/${editId}` 
+            : '/api/categories';
         
         const method = isEditing ? 'PUT' : 'POST';
 
@@ -96,7 +96,7 @@ const CategoryManager = () => {
         if (!deleteId) return;
 
         try {
-            const res = await fetch(`http://localhost:5001/api/categories/${deleteId}`, {
+            const res = await fetch(`/api/categories/${deleteId}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
             });

@@ -18,7 +18,7 @@ const BlogPost = () => {
         const fetchPost = async () => {
             setLoading(true);
             try {
-                const res = await fetch(`http://localhost:5001/api/blog/${slug}`);
+                const res = await fetch(`/api/blog/${slug}`);
                 if (res.ok) {
                     const data = await res.json();
                     setPostData(data);

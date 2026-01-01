@@ -9,7 +9,7 @@ const JobList = ({ jobs, onEdit, onRefresh, onViewApplications }) => {
     const handleDelete = async (id) => {
         if (window.confirm('Delete this job listing?')) {
             try {
-                await fetch(`http://localhost:5001/api/careers/${id}`, {
+                await fetch(`/api/careers/${id}`, {
                     method: 'DELETE',
                     headers: { Authorization: `Bearer ${token}` }
                 });

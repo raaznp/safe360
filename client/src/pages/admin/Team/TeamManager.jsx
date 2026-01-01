@@ -24,7 +24,7 @@ const TeamManager = () => {
 
     const fetchMembers = async () => {
         try {
-            const res = await fetch('http://localhost:5001/api/team/all', {
+            const res = await fetch('/api/team/all', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -88,8 +88,8 @@ const TeamManager = () => {
 
         try {
             const url = editingMember 
-                ? `http://localhost:5001/api/team/${editingMember._id}`
-                : 'http://localhost:5001/api/team';
+                ? `/api/team/${editingMember._id}`
+                : '/api/team';
             
             const method = editingMember ? 'PUT' : 'POST';
 
@@ -114,7 +114,7 @@ const TeamManager = () => {
     const handleDelete = async (id) => {
         if (!window.confirm('Remove this team member?')) return;
         try {
-            await fetch(`http://localhost:5001/api/team/${id}`, {
+            await fetch(`/api/team/${id}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
             });

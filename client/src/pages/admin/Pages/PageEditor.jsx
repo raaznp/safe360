@@ -99,7 +99,7 @@ const AdminPageEditor = () => {
     const fetchPage = async () => {
         setLoading(true);
         try {
-            const res = await fetch(`http://localhost:5001/api/pages/${slug}`);
+            const res = await fetch(`/api/pages/${slug}`);
             const json = await res.json();
             
             // Initialize content if empty based on config
@@ -133,7 +133,7 @@ const AdminPageEditor = () => {
         e.preventDefault();
         setSaving(true);
         try {
-            const res = await fetch(`http://localhost:5001/api/pages/${slug}`, {
+            const res = await fetch(`/api/pages/${slug}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

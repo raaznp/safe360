@@ -42,8 +42,8 @@ const JobEditor = ({ isOpen, onClose, job, onSuccess }) => {
         setLoading(true);
 
         const url = job
-            ? `http://localhost:5001/api/careers/${job._id}`
-            : 'http://localhost:5001/api/careers';
+            ? `/api/careers/${job._id}`
+            : '/api/careers';
 
         const method = job ? 'PUT' : 'POST';
         const token = localStorage.getItem('token');

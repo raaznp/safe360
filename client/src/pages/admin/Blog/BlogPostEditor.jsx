@@ -83,7 +83,7 @@ const BlogPostEditor = () => {
 
     const fetchCategories = async () => {
         try {
-            const res = await fetch('http://localhost:5001/api/categories');
+            const res = await fetch('/api/categories');
             const data = await res.json();
             setCategories(data);
         } catch (err) {
@@ -93,7 +93,7 @@ const BlogPostEditor = () => {
 
     const fetchTags = async () => {
         try {
-            const res = await fetch('http://localhost:5001/api/tags');
+            const res = await fetch('/api/tags');
             const data = await res.json();
             setTags(data);
         } catch (err) {
@@ -109,7 +109,7 @@ const BlogPostEditor = () => {
                 // Determine if admin by trying to fetch users? Or decode token?
                 // /api/users is protected, usually admin only? 
                 // Let's rely on the API response.
-                const res = await fetch('http://localhost:5001/api/users', {
+                const res = await fetch('/api/users', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 if (res.ok) {
@@ -126,7 +126,7 @@ const BlogPostEditor = () => {
 
     const fetchPost = async () => {
         try {
-            const res = await fetch(`http://localhost:5001/api/blog/admin/post/${id}`, {
+            const res = await fetch(`/api/blog/admin/post/${id}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
             if (res.ok) {
@@ -173,7 +173,7 @@ const BlogPostEditor = () => {
     const handleAddCategory = async () => {
         if (!newCategory.trim()) return;
         try {
-            const res = await fetch('http://localhost:5001/api/categories', {
+            const res = await fetch('/api/categories', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -218,8 +218,8 @@ const BlogPostEditor = () => {
         setLoading(true);
         try {
             const url = isEditing 
-                ? `http://localhost:5001/api/blog/${id}`
-                : 'http://localhost:5001/api/blog';
+                ? `/api/blog/${id}`
+                : '/api/blog';
             
             const method = isEditing ? 'PUT' : 'POST';
 
@@ -262,7 +262,7 @@ const BlogPostEditor = () => {
 
     const handleConfirmDelete = async () => {
         try {
-            const res = await fetch(`http://localhost:5001/api/blog/${id}`, {
+            const res = await fetch(`/api/blog/${id}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
             });

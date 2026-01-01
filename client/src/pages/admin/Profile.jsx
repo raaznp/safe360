@@ -40,7 +40,7 @@ const Profile = () => {
 
     const fetchProfile = async () => {
         try {
-            const res = await fetch('http://localhost:5001/api/users/profile', {
+            const res = await fetch('/api/users/profile', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -75,7 +75,7 @@ const Profile = () => {
         const cleanedWorkHistory = workHistory.map(({ _id, ...rest }) => rest);
 
         try {
-            const res = await fetch('http://localhost:5001/api/users/profile', {
+            const res = await fetch('/api/users/profile', {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',

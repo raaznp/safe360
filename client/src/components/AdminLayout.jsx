@@ -24,7 +24,7 @@ const AdminLayout = () => {
             const token = localStorage.getItem('token');
             if (!token) return;
             try {
-                const res = await fetch('http://localhost:5001/api/users/profile', {
+                const res = await fetch('/api/users/profile', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 if (res.ok) {

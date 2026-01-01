@@ -11,7 +11,7 @@ const Files = () => {
     const fetchFiles = async () => {
         setLoading(true);
         try {
-            const res = await fetch('http://localhost:5001/api/files', {
+            const res = await fetch('/api/files', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -38,7 +38,7 @@ const Files = () => {
         formData.append('file', file);
 
         try {
-            const res = await fetch('http://localhost:5001/api/files/upload', {
+            const res = await fetch('/api/files/upload', {
                 method: 'POST',
                 headers: { Authorization: `Bearer ${token}` },
                 body: formData

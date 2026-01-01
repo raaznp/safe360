@@ -22,7 +22,7 @@ const TagManager = () => {
     const fetchTags = async () => {
         setLoading(true);
         try {
-            const res = await fetch('http://localhost:5001/api/tags', {
+            const res = await fetch('/api/tags', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();
@@ -60,8 +60,8 @@ const TagManager = () => {
             : formData.name.toLowerCase().replace(/ /g, '-').replace(/[^\w-]+/g, '');
 
         const url = isEditing 
-            ? `http://localhost:5001/api/tags/${editId}` 
-            : 'http://localhost:5001/api/tags';
+            ? `/api/tags/${editId}` 
+            : '/api/tags';
         
         const method = isEditing ? 'PUT' : 'POST';
 
@@ -96,7 +96,7 @@ const TagManager = () => {
         if (!deleteId) return;
 
         try {
-            const res = await fetch(`http://localhost:5001/api/tags/${deleteId}`, {
+            const res = await fetch(`/api/tags/${deleteId}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
             });

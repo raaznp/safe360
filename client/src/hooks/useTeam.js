@@ -8,7 +8,7 @@ const useTeam = () => {
     useEffect(() => {
         const fetchTeam = async () => {
             try {
-                const res = await fetch('http://localhost:5001/api/team');
+                const res = await fetch('/api/team');
                 if (!res.ok) throw new Error('Failed to fetch team');
                 const json = await res.json();
                 setTeam(json);

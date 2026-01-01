@@ -11,7 +11,7 @@ const Messages = () => {
 
     const fetchMessages = async () => {
         try {
-            const res = await fetch('http://localhost:5001/api/contact', {
+            const res = await fetch('/api/contact', {
                 headers: { Authorization: `Bearer ${token}` }
             });
             const data = await res.json();

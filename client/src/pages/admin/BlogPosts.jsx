@@ -55,7 +55,7 @@ const BlogPosts = () => {
                 status: statusFilter
             });
 
-            const res = await fetch(`http://localhost:5001/api/blog/admin?${queryParams}`, {
+            const res = await fetch(`/api/blog/admin?${queryParams}`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 
@@ -88,7 +88,7 @@ const BlogPosts = () => {
         if (!postToDelete) return;
         
         try {
-            const res = await fetch(`http://localhost:5001/api/blog/${postToDelete}`, {
+            const res = await fetch(`/api/blog/${postToDelete}`, {
                 method: 'DELETE',
                 headers: { Authorization: `Bearer ${token}` }
             });

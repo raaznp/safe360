@@ -12,7 +12,7 @@ const Dashboard = () => {
         const fetchAnalytics = async () => {
             try {
                 const token = localStorage.getItem('token');
-                const res = await fetch('http://localhost:5001/api/analytics', {
+                const res = await fetch('/api/analytics', {
                     headers: { Authorization: `Bearer ${token}` }
                 });
                 const result = await res.json();

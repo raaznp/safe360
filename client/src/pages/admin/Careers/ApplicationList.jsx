@@ -13,8 +13,8 @@ const ApplicationList = ({ jobId }) => {
         setLoading(true);
         try {
             const url = jobId 
-                ? `http://localhost:5001/api/careers/applications?job=${jobId}`
-                : 'http://localhost:5001/api/careers/applications';
+                ? `/api/careers/applications?job=${jobId}`
+                : '/api/careers/applications';
             
             const res = await fetch(url, {
                 headers: { Authorization: `Bearer ${token}` }
@@ -34,7 +34,7 @@ const ApplicationList = ({ jobId }) => {
 
     const handleStatusUpdate = async (id, newStatus) => {
         try {
-            const res = await fetch(`http://localhost:5001/api/careers/applications/${id}`, {
+            const res = await fetch(`/api/careers/applications/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json',
