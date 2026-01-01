@@ -6,6 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     port: 5174,
+    allowedHosts: ['safe360.rajkumarnepal.com.np'],
     proxy: {
       '/api': {
         target: 'http://localhost:5001',
