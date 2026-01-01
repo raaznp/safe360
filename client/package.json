@@ -13,7 +13,6 @@
     "framer-motion": "^12.23.26",
     "jodit-react": "^5.2.38",
     "lucide-react": "^0.562.0",
-    "__puppeteer": "^24.34.0",
     "react": "^19.2.0",
     "react-countup": "^6.5.3",
     "react-dom": "^19.2.0",
