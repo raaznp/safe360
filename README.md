@@ -117,33 +117,6 @@ Safe360/
   - Username: `admin`
   - Password: `password123`
 
-## 🧪 Running Tests
-
-Safe360 includes a suite of verification scripts located in `server/test_cases`.
-
-### Comprehensive Test
-
-To check all core forms (Contact, User, Team, etc.) at once:
-
-```bash
-cd server
-node test_cases/scripts/test_missing_forms.js
-```
-
-### Specific Tests
-
-Run individual scripts for targeted testing:
-
-- **Blog Flow**: `node test_cases/scripts/test_blog_flow.js`
-- **Media Uploads**: `node test_cases/scripts/test_media_features.js`
-- **Privacy Policy**: `node test_cases/scripts/update_privacy_policy.js`
-
-## 📝 Troubleshooting
-
-- **Database Connection Failed**: Ensure your MongoDB server is running. If using Atlas, check your IP whitelist.
-- **Login fails**: Verify you have seeded the `admin` user or check the console for JWT errors.
-- **Images not loading**: Check `server/uploads` permissions and ensure `PORT` matches the client's API URL configuration.
-
 ---
 
 _Verified Environment: Windows 11, Node v18+, MongoDB v6.0_
