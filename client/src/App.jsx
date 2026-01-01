@@ -30,11 +30,14 @@ import ScrollToTop from './components/ScrollToTop';
 import ScrollToTopButton from './components/ScrollToTopButton';
 import { ToastProvider } from './contexts/ToastContext';
 
+import { HelmetProvider } from 'react-helmet-async';
+
 function App() {
   return (
     <ToastProvider>
-      <Router>
-      <ScrollToTop />
+      <HelmetProvider>
+        <Router>
+        <ScrollToTop />
       <Routes>
         {/* Public Routes */}
         <Route path="/" element={
@@ -83,7 +86,8 @@ function App() {
           </Route>
         </Route>
       </Routes>
-    </Router>
+      </Router>
+      </HelmetProvider>
     </ToastProvider>
   );
 }

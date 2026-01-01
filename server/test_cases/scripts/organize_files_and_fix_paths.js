@@ -4,9 +4,9 @@ const path = require('path');
 const dotenv = require('dotenv');
 
 // Load environment variables
-dotenv.config({ path: path.join(__dirname, '../.env') });
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
-const UPLOADS_DIR = path.join(__dirname, '../uploads');
+const UPLOADS_DIR = path.join(__dirname, '../../uploads');
 const MEDIA_DIR = path.join(UPLOADS_DIR, 'media');
 const FILES_DIR = path.join(UPLOADS_DIR, 'files');
 
@@ -14,9 +14,9 @@ const FILES_DIR = path.join(UPLOADS_DIR, 'files');
 const IMAGE_EXTENSIONS = ['.jpg', '.jpeg', '.png', '.gif', '.webp', '.svg', '.bmp', '.tiff', '.ico'];
 
 // Import Models
-const User = require('../models/User');
-const Media = require('../models/Media');
-const BlogPost = require('../models/BlogPost');
+const User = require('../../models/User');
+const Media = require('../../models/Media');
+const BlogPost = require('../../models/BlogPost');
 
 const connectDB = async () => {
     try {

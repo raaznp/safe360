@@ -125,11 +125,36 @@ router.put('/profile', protect, async (req, res) => {
 
 // @route GET /api/users
 // @desc Get all users
+// @route GET /api/users
+// @desc Get all users with post counts
 router.get('/', protect, async (req, res) => {
     try {
-        const users = await User.find({}).select('-password');
+        // Use aggregation to join with blogposts and count them
+        const users = await User.aggregate([
+            {
+                $lookup: {
+                    from: 'blogposts', // collection name (usually lowercase plural of model name)
+                    localField: '_id',
+                    foreignField: 'author',
+                    as: 'posts'
+                }
+            },
+            {
+                $addFields: {
+                    postCount: { $size: '$posts' }
+                }
+            },
+            {
+                $project: {
+                    password: 0,
+                    posts: 0 // Remove the heavy posts array
+                }
+            }
+        ]);
+        
         res.json(users);
     } catch (error) {
+        console.error(error);
         res.status(500).json({ message: 'Server error' });
     }
 });

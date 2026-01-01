@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const TEST_DIR = path.join(__dirname, 'test_assets');
+const TEST_DIR = path.join(__dirname, '../test_assets');
 const VALID_TXT_PATH = path.join(TEST_DIR, 'test.txt');
 if (!fs.existsSync(VALID_TXT_PATH)) fs.writeFileSync(VALID_TXT_PATH, 'This is a valid text file.');
 

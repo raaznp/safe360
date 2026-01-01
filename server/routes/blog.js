@@ -168,7 +168,8 @@ router.get('/admin', protect, async (req, res) => {
             .sort(sortOptions)
             .skip((page - 1) * limit)
             .limit(limit)
-            .populate('author', 'name'); // Populate author name for display
+            .limit(limit)
+            .populate('author', 'fullName username'); // Populate author name for display
 
         res.json({
             posts,
@@ -199,9 +200,9 @@ router.get('/admin/post/:id', protect, async (req, res) => {
 // @route GET /api/blog/:slug
 router.get('/:slug', async (req, res) => {
     try {
-        const post = await BlogPost.findOne({ slug: req.params.slug });
+        const post = await BlogPost.findOne({ slug: req.params.slug }).populate('author', 'fullName username avatar bio');
         if (post) {
-            // Fetch related posts (same tags or category, exclude current)
+            // Fetch related posts
             const relatedQuery = {
                 _id: { $ne: post._id },
                 published: true,
@@ -210,14 +211,12 @@ router.get('/:slug', async (req, res) => {
                 ]
             };
             
-            // If categories exist, add it to related logic as optional match
             if (post.categories && post.categories.length > 0) {
                  relatedQuery.$or.push({ categories: { $in: post.categories } });
             }
 
-            const related = await BlogPost.find(relatedQuery).limit(3);
+            const related = await BlogPost.find(relatedQuery).limit(3).populate('author', 'fullName username');
 
-            // Fetch next and previous posts
             const next = await BlogPost.findOne({
                 _id: { $ne: post._id },
                 published: true,
@@ -241,9 +240,20 @@ router.get('/:slug', async (req, res) => {
 
 // @route POST /api/blog (Admin only)
 router.post('/', protect, async (req, res) => {
-    const { title, slug, metaDescription, content, image, tags, categories, published, visibility, publishedAt, commentsEnabled } = req.body;
+    const { title, slug, metaDescription, content, image, tags, categories, published, visibility, publishedAt, commentsEnabled, author } = req.body;
     try {
         const readingTime = calculateReadingTime(content);
+        
+        // Determine author: if admin provides author ID, use it. Otherwise default to current user.
+        // We trust the admin to provide valid ID, but logic implies:
+        // If user is admin (req.user.role === 'admin') AND author is provided, use it.
+        // Else use req.user._id
+        
+        let authorId = req.user._id;
+        if (req.user.role === 'admin' && author) {
+            authorId = author;
+        }
+
         const post = new BlogPost({ 
             title, 
             slug, 
@@ -256,7 +266,8 @@ router.post('/', protect, async (req, res) => {
             visibility: visibility || 'public',
             publishedAt: publishedAt || new Date(),
             readingTime,
-            commentsEnabled: commentsEnabled !== undefined ? commentsEnabled : true
+            commentsEnabled: commentsEnabled !== undefined ? commentsEnabled : true,
+            author: authorId
         });
         const createdPost = await post.save();
         res.status(201).json(createdPost);
@@ -267,7 +278,7 @@ router.post('/', protect, async (req, res) => {
 
 // @route PUT /api/blog/:id (Admin only)
 router.put('/:id', protect, async (req, res) => {
-    const { title, slug, metaDescription, content, image, tags, categories, published, visibility, publishedAt, commentsEnabled } = req.body;
+    const { title, slug, metaDescription, content, image, tags, categories, published, visibility, publishedAt, commentsEnabled, author } = req.body;
     try {
         const post = await BlogPost.findById(req.params.id);
 
@@ -284,6 +295,11 @@ router.put('/:id', protect, async (req, res) => {
             post.publishedAt = publishedAt !== undefined ? publishedAt : post.publishedAt;
             post.commentsEnabled = commentsEnabled !== undefined ? commentsEnabled : post.commentsEnabled;
             
+            // Allow author update if admin
+            if (req.user.role === 'admin' && author) {
+                post.author = author;
+            }
+
             if (content) {
                 post.readingTime = calculateReadingTime(content);
             }

@@ -102,6 +102,7 @@ const Users = () => {
                             <th className="px-6 py-4 font-medium">Username</th>
                             <th className="px-6 py-4 font-medium">Email</th>
                             <th className="px-6 py-4 font-medium">Role</th>
+                            <th className="px-6 py-4 font-medium">Post Count</th>
                             <th className="px-6 py-4 font-medium">Created At</th>
                             <th className="px-6 py-4 font-medium text-right">Actions</th>
                         </tr>
@@ -126,6 +127,12 @@ const Users = () => {
                                         <Shield className="w-3 h-3 mr-1" />
                                         {user.role}
                                     </span>
+                                </td>
+                                <td className="px-6 py-4 px-4 text-gray-600 dark:text-gray-400 text-sm">
+                                    <div className="flex items-center gap-1">
+                                        <span className="font-semibold">{user.postCount || 0}</span>
+                                        <span className="text-xs text-gray-400">posts</span>
+                                    </div>
                                 </td>
                                 <td className="px-6 py-4 text-gray-600 dark:text-gray-400 text-sm">
                                     {new Date(user.createdAt).toLocaleDateString()}

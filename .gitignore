@@ -35,3 +35,6 @@ client/dist
 .DS_Store
 Thumbs.db
 
+# Automation Scripts
+automation
+

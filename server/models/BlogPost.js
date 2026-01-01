@@ -5,7 +5,7 @@ const blogPostSchema = new mongoose.Schema({
     slug: { type: String, required: true, unique: true },
     metaDescription: { type: String },
     content: { type: String, required: true },
-    author: { type: String, default: 'Safe360 Team' },
+    author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     categories: { type: [String], default: [] },
     tags: { type: [String], default: [] },
     imageAlt: { type: String, default: '' }, // Alt text for the image

@@ -9,7 +9,18 @@ const app = express();
 // Middleware
 app.use(helmet({
     crossOriginResourcePolicy: { policy: "cross-origin" },
-    contentSecurityPolicy: false, // Default is tricky with some libraries, simplified for now
+    contentSecurityPolicy: {
+        directives: {
+            defaultSrc: ["'self'"],
+            scriptSrc: ["'self'", "'unsafe-inline'", "'unsafe-eval'"], // unsafe-eval required for some dev tools/libraries
+            styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+            imgSrc: ["'self'", "data:", "https://images.unsplash.com", "blob:"],
+            fontSrc: ["'self'", "https://fonts.gstatic.com"],
+            connectSrc: ["'self'", "http://localhost:5174", "ws://localhost:5174"], // Allow vite dev server
+            objectSrc: ["'none'"],
+            upgradeInsecureRequests: [],
+        },
+    },
     xContentTypeOptions: true // Strict MIME type checking (nosniff)
 }));
 app.use((req, res, next) => {

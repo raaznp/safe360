@@ -30,7 +30,8 @@ const BlogPostEditor = () => {
         visibility: 'public',
         publishedAt: '',
         commentsEnabled: true,
-        imageAlt: ''
+        imageAlt: '',
+        author: ''
     });
 
     const [isMediaModalOpen, setIsMediaModalOpen] = useState(false);
@@ -100,6 +101,29 @@ const BlogPostEditor = () => {
         }
     };
 
+    const [users, setUsers] = useState([]);
+    
+    useEffect(() => {
+        const fetchUsers = async () => {
+            try {
+                // Determine if admin by trying to fetch users? Or decode token?
+                // /api/users is protected, usually admin only? 
+                // Let's rely on the API response.
+                const res = await fetch('http://localhost:5001/api/users', {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                if (res.ok) {
+                    const data = await res.json();
+                    setUsers(data);
+                }
+            } catch (err) {
+                // If fails (e.g. 403), just don't show author selection
+                console.log('Not authorized to fetch users or error');
+            }
+        };
+        fetchUsers();
+    }, []);
+
     const fetchPost = async () => {
         try {
             const res = await fetch(`http://localhost:5001/api/blog/admin/post/${id}`, {
@@ -124,7 +148,8 @@ const BlogPostEditor = () => {
                     published: data.published,
                     visibility: data.visibility || 'public',
                     publishedAt: data.publishedAt ? new Date(data.publishedAt).toISOString().slice(0, 16) : '',
-                    commentsEnabled: data.commentsEnabled !== undefined ? data.commentsEnabled : true
+                    commentsEnabled: data.commentsEnabled !== undefined ? data.commentsEnabled : true,
+                    author: data.author || '' // Author ID
                 });
             } else {
                 console.error('Failed to fetch post');
@@ -399,7 +424,8 @@ const BlogPostEditor = () => {
                                 </button>
                              </div>
 
-                             <div className="space-y-4 pt-2">
+
+
                                 <div className="flex items-center justify-between">
                                     <label className="text-sm font-medium text-gray-700 dark:text-gray-300">Visibility</label>
                                     <div className="flex gap-3">
@@ -440,7 +466,6 @@ const BlogPostEditor = () => {
                                          />
                                      </div>
                                 </div>
-                             </div>
                         </div>
                         <div className="px-4 py-3 bg-gray-50 dark:bg-gray-900/50 border-t border-gray-200 dark:border-gray-700 flex items-center justify-between">
                              {isEditing ? (
@@ -606,6 +631,30 @@ const BlogPostEditor = () => {
                            </div>
                         )}
                     </div>
+
+                    {/* Author Selection (Moved to Bottom) */}
+                    {users.length > 0 && (
+                        <div className="bg-white dark:bg-gray-800 p-6 rounded-xl shadow-sm border border-gray-200 dark:border-gray-700">
+                            <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">Author</h3>
+                            <div>
+                                <select
+                                    className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-secondary outline-none text-gray-900 dark:text-white"
+                                    value={formData.author || ''}
+                                    onChange={(e) => setFormData({ ...formData, author: e.target.value })}
+                                >
+                                    <option value="" disabled>Select Author</option>
+                                    {users.map(user => (
+                                        <option key={user._id} value={user._id}>
+                                            {user.fullName || user.username} ({user.role})
+                                        </option>
+                                    ))}
+                                </select>
+                                <p className="text-xs text-gray-500 mt-2">
+                                    Admins can reassign authorship.
+                                </p>
+                            </div>
+                        </div>
+                    )}
                 </div>
             </div>
             

@@ -2,7 +2,7 @@ const http = require('http');
 const fs = require('fs');
 const path = require('path');
 
-const TEST_DIR = path.join(__dirname, 'test_assets');
+const TEST_DIR = path.join(__dirname, '../test_assets');
 if (!fs.existsSync(TEST_DIR)) fs.mkdirSync(TEST_DIR);
 
 const VALID_PNG_PATH = path.join(TEST_DIR, 'blog_test.png');

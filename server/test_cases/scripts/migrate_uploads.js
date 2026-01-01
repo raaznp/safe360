@@ -4,17 +4,17 @@ const path = require('path');
 const dotenv = require('dotenv');
 
 // Load environment variables
-dotenv.config({ path: path.join(__dirname, '../.env') });
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
-const UPLOADS_DIR = path.join(__dirname, '../uploads');
+const UPLOADS_DIR = path.join(__dirname, '../../uploads');
 const MEDIA_DIR = path.join(UPLOADS_DIR, 'media');
 const FILES_DIR = path.join(UPLOADS_DIR, 'files');
 
 // Import Models (Need to point to actual model files)
 // Assuming standard structure
-const User = require('../models/User');
-const BlogPost = require('../models/BlogPost');
-const Media = require('../models/Media'); // If you have a separate Media model
+const User = require('../../models/User');
+const BlogPost = require('../../models/BlogPost');
+const Media = require('../../models/Media'); // If you have a separate Media model
 
 const connectDB = async () => {
     try {

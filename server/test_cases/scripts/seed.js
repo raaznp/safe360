@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const dotenv = require('dotenv');
-const User = require('./models/User');
-const Job = require('./models/Job');
-const BlogPost = require('./models/BlogPost');
+const path = require('path');
+const User = require('../../models/User');
+const Job = require('../../models/Job');
+const BlogPost = require('../../models/BlogPost');
 
-dotenv.config();
+dotenv.config({ path: path.join(__dirname, '../../.env') });
 
 const jobs = [
     {

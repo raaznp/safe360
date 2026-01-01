@@ -1,8 +1,9 @@
 const fs = require('fs');
 const https = require('https');
+const path = require('path');
 
 // Read seed.js to extract URLs
-const seedContent = fs.readFileSync('seed.js', 'utf8');
+const seedContent = fs.readFileSync(path.join(__dirname, 'seed.js'), 'utf8');
 const urlRegex = /'https:\/\/images\.unsplash\.com\/[^']+'/g;
 const matches = seedContent.match(urlRegex);
 

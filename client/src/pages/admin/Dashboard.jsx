@@ -94,6 +94,20 @@ const Dashboard = () => {
                     </div>
                     <span className="text-green-500 dark:text-green-400 text-sm mt-4 block">+{data.inquiries.growth}% from last week</span>
                 </div>
+
+                {/* New Blog Posts Card */}
+                <div className="bg-white dark:bg-gray-800 p-6 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm dark:shadow-none transition-colors">
+                    <div className="flex justify-between items-start">
+                        <div>
+                            <p className="text-gray-600 dark:text-gray-400 text-sm">Total Blog Posts</p>
+                            <h3 className="text-2xl font-bold text-gray-900 dark:text-white mt-1">{data.blogPosts}</h3>
+                        </div>
+                        <div className="p-2 bg-indigo-500/10 rounded-lg">
+                            <FileText className="w-6 h-6 text-indigo-500" />
+                        </div>
+                    </div>
+                    <span className="text-gray-600 dark:text-gray-400 text-sm mt-4 block">Published content</span>
+                </div>
             </div>
 
             {/* Charts */}

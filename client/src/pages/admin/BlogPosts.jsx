@@ -227,6 +227,7 @@ const BlogPosts = () => {
                         <thead className="bg-gray-50 dark:bg-gray-900/50 border-b border-gray-200 dark:border-gray-700">
                             <tr>
                                 <Th field="title" label="Title" />
+                                <Th field="author" label="Author" sortable={false} />
                                 <Th field="categories" label="Category" /> 
                                 <Th field="published" label="Status" />
                                 <Th field="createdAt" label="Date" />
@@ -263,6 +264,22 @@ const BlogPosts = () => {
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
+                                            <div className="flex items-center">
+                                                {post.author ? (
+                                                    <div className="flex items-center gap-2">
+                                                        <div className="w-6 h-6 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center text-xs font-medium text-gray-600 dark:text-gray-300">
+                                                            {(post.author.fullName || post.author.username || 'A').charAt(0).toUpperCase()}
+                                                        </div>
+                                                        <span className="text-sm font-medium text-gray-900 dark:text-white">
+                                                            {post.author.fullName || post.author.username || 'Unknown'}
+                                                        </span>
+                                                    </div>
+                                                ) : (
+                                                    <span className="text-sm text-gray-400 italic">Unknown</span>
+                                                )}
+                                            </div>
+                                        </td>
+                                        <td className="px-6 py-4 whitespace-nowrap">
                                             <div className="flex gap-1 flex-wrap">
                                                 {post.categories && post.categories.length > 0 ? (
                                                     post.categories.slice(0, 2).map((cat, i) => (
@@ -290,9 +307,6 @@ const BlogPosts = () => {
                                         <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400">
                                             <div className="flex flex-col">
                                                 <span>{new Date(post.createdAt).toLocaleDateString()}</span>
-                                                {post.author && (
-                                                    <span className="text-xs text-gray-400">{post.author.name}</span>
-                                                )}
                                             </div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">

@@ -3,7 +3,7 @@ const fs = require('fs');
 const path = require('path');
 
 // 1. Create Test Files
-const TEST_DIR = path.join(__dirname, 'test_assets');
+const TEST_DIR = path.join(__dirname, '../test_assets');
 if (!fs.existsSync(TEST_DIR)) fs.mkdirSync(TEST_DIR);
 
 const VALID_TXT_PATH = path.join(TEST_DIR, 'test.txt');

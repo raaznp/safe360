@@ -2,17 +2,20 @@ import { motion } from 'framer-motion';
 import { ArrowRight, Monitor, Headset, BarChart, CheckCircle } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import CountUp from 'react-countup';
-import usePageTitle from '../hooks/usePageTitle';
+import SEO from '../components/SEO';
 import usePageContent from '../hooks/usePageContent';       
 
 const Home = () => {
-    usePageTitle('Home');
     const { page } = usePageContent('home');
     const hero = page?.content?.hero || {};
     const stats = page?.content?.stats || {};
 
     return (
         <div className="bg-white dark:bg-primary min-h-screen transition-colors duration-300">
+            <SEO 
+                title="Home"
+                description={hero.subtitle || "Safe360: Next-Gen Corporate Training with VR/AR and Advanced LMS."}
+            />
             {/* Hero Section */}
             <section className="relative h-screen flex items-center justify-center overflow-hidden">
                 {/* Abstract Background */}
@@ -191,7 +194,7 @@ const Home = () => {
                                 transition={{ delay: i * 0.1 }}
                                 className="rounded-xl overflow-hidden h-80 border border-white/5"
                             >
-                                <img src={img} alt="Safe360 Office" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
+                                <img src={img} alt="Safe360 Office" loading="lazy" className="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
                             </motion.div>
                         ))}
                     </div>
