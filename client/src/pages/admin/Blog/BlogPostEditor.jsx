@@ -149,7 +149,7 @@ const BlogPostEditor = () => {
                     visibility: data.visibility || 'public',
                     publishedAt: data.publishedAt ? new Date(data.publishedAt).toISOString().slice(0, 16) : '',
                     commentsEnabled: data.commentsEnabled !== undefined ? data.commentsEnabled : true,
-                    author: data.author || '' // Author ID
+                    author: (data.author && typeof data.author === 'object') ? data.author._id : (data.author || '')
                 });
             } else {
                 console.error('Failed to fetch post');
