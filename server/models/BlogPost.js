@@ -8,6 +8,7 @@ const blogPostSchema = new mongoose.Schema({
     author: { type: mongoose.Schema.Types.ObjectId, ref: 'User' },
     categories: { type: [String], default: [] },
     tags: { type: [String], default: [] },
+    image: { type: String, default: '' }, // Featured Image URL
     imageAlt: { type: String, default: '' }, // Alt text for the image
     published: { type: Boolean, default: true },
     visibility: { type: String, enum: ['public', 'private'], default: 'public' },
