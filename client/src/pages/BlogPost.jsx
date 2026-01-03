@@ -115,10 +115,14 @@ const BlogPost = () => {
 
                     <div className="flex flex-col md:flex-row md:items-center justify-between border-b border-gray-200 dark:border-white/10 pb-8 mb-8 gap-4">
                         <div className="flex items-center space-x-6 text-sm text-gray-600 dark:text-gray-400">
-                            <Link to={`/blog?author=${encodeURIComponent(post.author || 'Safe360 Team')}`} className="flex items-center hover:text-secondary transition-colors">
-                                <User className="h-4 w-4 mr-2" /> {post.author || 'Safe360 Team'}
+                            <Link 
+                                to={`/blog?author=${encodeURIComponent(typeof post.author === 'object' ? post.author._id : (post.author || ''))}`} 
+                                className="flex items-center hover:text-secondary transition-colors"
+                            >
+                                <User className="h-4 w-4 mr-2" /> 
+                                {typeof post.author === 'object' ? (post.author.fullName || post.author.username) : (post.author || 'Safe360 Team')}
                             </Link>
-                            <span className="flex items-center"><Calendar className="h-4 w-4 mr-2" /> {new Date(post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
+                            <span className="flex items-center"><Calendar className="h-4 w-4 mr-2" /> {new Date(post.publishedAt || post.createdAt).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</span>
                         </div>
                         <div className="flex space-x-4">
                             <button onClick={() => handleShare('native')} className="text-gray-400 hover:text-secondary transition-colors"><Share2 className="w-5 h-5" /></button>
