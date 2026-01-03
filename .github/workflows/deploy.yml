@@ -35,6 +35,6 @@ jobs:
             # Go back to root
             cd ..
 
-            # Reload PM2 (or start if not running)
-            pm2 reload ecosystem.config.js --env production || pm2 start ecosystem.config.js --env production
+            # Reload PM2
+            pm2 reload
             pm2 save
