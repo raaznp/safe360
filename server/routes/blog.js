@@ -288,7 +288,7 @@ router.put('/:id', protect, async (req, res) => {
             post.slug = slug || post.slug;
             post.metaDescription = metaDescription || post.metaDescription;
             post.content = content || post.content;
-            post.image = image || post.image;
+            post.image = image !== undefined ? image : post.image;
             post.tags = tags || post.tags;
             post.categories = categories || post.categories;
             post.published = published !== undefined ? published : post.published;

@@ -36,5 +36,5 @@ jobs:
             cd ..
 
             # Reload PM2
-            pm2 reload
+            pm2 reload all
             pm2 save
