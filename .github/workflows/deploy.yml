@@ -1,0 +1,40 @@
+name: Deploy to Server
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Deploy via SSH
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USER }}
+          key: ${{ secrets.SERVER_SSH_KEY }}
+          script: |
+            # Navigate to project directory
+            cd /path/to/your/project/Safe360 || exit
+
+            # Pull latest changes
+            git pull origin main
+
+            # Install server dependencies
+            cd server && npm install
+
+            # Install client dependencies and build
+            cd ../client && npm install && npm run build
+
+            # Go back to root
+            cd ..
+
+            # Reload PM2 to apply changes
+            # Assumes PM2 is installed globally on the server
+            pm2 reload ecosystem.config.js --env production
