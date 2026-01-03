@@ -90,25 +90,30 @@ app.get('*', async (req, res) => {
                     // Inject Metadata
                     const title = post.title || 'Safe360 - Immersive Corporate Training';
                     const description = post.metaDescription || post.content.replace(/<[^>]*>/g, '').substring(0, 160) + '...';
-                    // Ensure image is absolute URL if relative
+                    
                     let image = post.image || 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=2078&auto=format&fit=crop';
                     if (image.startsWith('/')) {
                         image = `https://safe360.rajkumarnepal.com.np${image}`;
                     }
 
-                    // Replace Meta Tags
+                    // Robust Regex Replacement
+                    // Matches <meta ... property="og:title" ... > globally, regardless of attribute order
                     let injectedHtml = htmlData
-                        .replace('<title>Safe360</title>', `<title>${title} | Safe360</title>`)
-                        .replace(/content="Safe360 - Immersive Corporate Training"/g, `content="${title}"`)
-                        .replace(/content="Revolutionizing corporate training with immersive VR\/AR technologies and next-gen Learning Management Systems."/g, `content="${description}"`)
-                        .replace(/content="https:\/\/images.unsplash.com\/photo-1593508512255-86ab42a8e620\?q=80&w=2078&auto=format&fit=crop"/g, `content="${image}"`);
-                    
-                    // Also explicitly target OG and Twitter tags if the generic replace missed them (regex fallback)
-                    // The above simple replacements rely on strict string matching with the default index.html content.
-                    // For robustness, we can use regex to replace specific property contents.
-                    
-                    // Note: The simple replace above works if index.html exactly matches the string. 
-                    // To be safer, we can re-inject purely.
+                        .replace(/<title>.*?<\/title>/, `<title>${title} | Safe360</title>`)
+                        
+                        // Open Graph
+                        .replace(/<meta[^>]*property=["']og:title["'][^>]*>/gi, `<meta property="og:title" content="${title}" />`)
+                        .replace(/<meta[^>]*property=["']og:description["'][^>]*>/gi, `<meta property="og:description" content="${description}" />`)
+                        .replace(/<meta[^>]*property=["']og:image["'][^>]*>/gi, `<meta property="og:image" content="${image}" />`)
+                        .replace(/<meta[^>]*property=["']og:url["'][^>]*>/gi, `<meta property="og:url" content="https://safe360.rajkumarnepal.com.np/blog/${slug}" />`)
+                        
+                        // Twitter
+                        .replace(/<meta[^>]*property=["']twitter:title["'][^>]*>/gi, `<meta property="twitter:title" content="${title}" />`)
+                        .replace(/<meta[^>]*property=["']twitter:description["'][^>]*>/gi, `<meta property="twitter:description" content="${description}" />`)
+                        .replace(/<meta[^>]*property=["']twitter:image["'][^>]*>/gi, `<meta property="twitter:image" content="${image}" />`)
+                        
+                        // Basic Meta
+                        .replace(/<meta[^>]*name=["']description["'][^>]*>/gi, `<meta name="description" content="${description}" />`);
                     
                     return res.send(injectedHtml);
                 });
