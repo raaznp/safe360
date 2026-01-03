@@ -645,7 +645,7 @@ const BlogPostEditor = () => {
                                     <option value="" disabled>Select Author</option>
                                     {users.map(user => (
                                         <option key={user._id} value={String(user._id)}>
-                                            {user.fullName || user.username} ({user.role})
+                                            {user.username} ({user.role})
                                         </option>
                                     ))}
                                 </select>
