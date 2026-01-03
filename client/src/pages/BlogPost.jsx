@@ -129,7 +129,7 @@ const BlogPost = () => {
 
                     <div className="prose prose-lg prose-gray dark:prose-invert max-w-none mb-16">
                         <div className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">
-                            {post.content}
+                            <div dangerouslySetInnerHTML={{ __html: post.content }} />
                         </div>
                     </div>
 

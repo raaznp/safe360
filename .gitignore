@@ -28,8 +28,7 @@ dist-ssr
 coverage
 build
 dist
-uploads
-server/uploads
+
 client/build
 client/dist
 .DS_Store

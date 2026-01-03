@@ -639,12 +639,12 @@ const BlogPostEditor = () => {
                             <div>
                                 <select
                                     className="w-full px-3 py-2 text-sm bg-gray-50 dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-lg focus:ring-2 focus:ring-secondary outline-none text-gray-900 dark:text-white"
-                                    value={formData.author || ''}
+                                    value={String(formData.author || '')}
                                     onChange={(e) => setFormData({ ...formData, author: e.target.value })}
                                 >
                                     <option value="" disabled>Select Author</option>
                                     {users.map(user => (
-                                        <option key={user._id} value={user._id}>
+                                        <option key={user._id} value={String(user._id)}>
                                             {user.fullName || user.username} ({user.role})
                                         </option>
                                     ))}
