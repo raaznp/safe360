@@ -643,9 +643,11 @@ const BlogPostEditor = () => {
                                     onChange={(e) => setFormData({ ...formData, author: e.target.value })}
                                 >
                                     <option value="" disabled>Select Author</option>
-                                    {users.map(user => (
+                                    {users
+                                        .sort((a, b) => a.username.localeCompare(b.username))
+                                        .map(user => (
                                         <option key={user._id} value={String(user._id)}>
-                                            {user.fullName || user.username} ({user.username})
+                                            {user.username} ({user.fullName || 'No Name'})
                                         </option>
                                     ))}
                                 </select>
