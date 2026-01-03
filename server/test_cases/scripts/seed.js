@@ -520,8 +520,21 @@ const seedData = async () => {
 
         // Seed Blog Posts
         await BlogPost.deleteMany({});
-        await BlogPost.insertMany(blogPosts);
-        console.log(`Seeded ${blogPosts.length} blog posts`);
+        
+        // Fetch the admin user to use their ID
+        const adminUser = await User.findOne({ username: 'admin' });
+        if (!adminUser) {
+            throw new Error('Admin user not found for seeding posts');
+        }
+
+        const postsWithAuthor = blogPosts.map(post => ({
+            ...post,
+            author: adminUser._id,
+            visibility: 'public'
+        }));
+
+        await BlogPost.insertMany(postsWithAuthor);
+        console.log(`Seeded ${blogPosts.length} blog posts with author ${adminUser.username}`);
 
         process.exit();
     } catch (error) {

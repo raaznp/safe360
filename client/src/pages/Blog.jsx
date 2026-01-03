@@ -140,8 +140,9 @@ const Blog = () => {
                                     <div className="p-6 flex-1 flex flex-col">
                                         <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-4 space-x-4">
                                             <span className="flex items-center"><Calendar className="h-3 w-3 mr-1" /> {new Date(post.createdAt).toLocaleDateString()}</span>
-                                            <Link to={`/blog?author=${encodeURIComponent(post.author || 'Safe360 Team')}`} className="flex items-center hover:text-secondary transition-colors">
-                                                <User className="h-3 w-3 mr-1" /> {post.author || 'Safe360 Team'}
+                                            <Link to={`/blog?author=${encodeURIComponent(typeof post.author === 'object' ? post.author._id : post.author)}`} className="flex items-center hover:text-secondary transition-colors">
+                                                <User className="h-3 w-3 mr-1" /> 
+                                                {typeof post.author === 'object' ? (post.author.fullName || post.author.username) : (post.author || 'Safe360 Team')}
                                             </Link>
                                         </div>
                                         <Link to={`/blog/${post.slug}`}>
@@ -150,7 +151,12 @@ const Blog = () => {
                                             </h3>
                                         </Link>
                                         <p className="text-gray-600 dark:text-gray-400 text-sm mb-6 line-clamp-3">
-                                            {post.content}
+                                            {(() => {
+                                                // Strip HTML for summary
+                                                const tmp = document.createElement("DIV");
+                                                tmp.innerHTML = post.content;
+                                                return tmp.textContent || tmp.innerText || "";
+                                            })()}
                                         </p>
                                         <div className="mt-auto flex items-center justify-between">
                                             <div className="flex flex-wrap gap-2">

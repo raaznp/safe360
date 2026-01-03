@@ -73,7 +73,8 @@ router.get('/', async (req, res) => {
         const posts = await BlogPost.find(query)
             .sort({ createdAt: -1, _id: -1 })
             .skip((page - 1) * limit)
-            .limit(limit);
+            .limit(limit)
+            .populate('author', 'fullName username');
 
         res.json({
             posts,

@@ -31,12 +31,14 @@ app.use((req, res, next) => {
 });
 app.use(cors());
 app.use(express.json());
-// Serve uploads directory - Ensure nosniff is effective
-app.use('/uploads', express.static(require('path').join(__dirname, 'uploads'), {
+// Serve Client Static Files (Production)
+const path = require('path');
+app.use(express.static(path.join(__dirname, '../client/dist')));
+
+// Serve uploads
+app.use('/uploads', express.static(path.join(__dirname, 'uploads'), {
     setHeaders: (res, path) => {
         res.set('X-Content-Type-Options', 'nosniff');
-        // Force download for generic files to avoid browser trying to execute/render them?
-        // Maybe optional for images/videos.
     }
 }));
 
@@ -59,8 +61,14 @@ app.use('/api/files', require('./routes/files'));
 app.use('/api/categories', require('./routes/categories'));
 app.use('/api/tags', require('./routes/tags'));
 
-app.get('/', (req, res) => {
+// API Root
+app.get('/api', (req, res) => {
     res.send('Safe360 API is running');
+});
+
+// Wildcard Route for React SPA
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
 });
 
 // Global Error Handler
