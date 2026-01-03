@@ -3,6 +3,8 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
+const fs = require('fs');
+const BlogPost = require('./models/BlogPost');
 
 const app = express();
 
@@ -67,8 +69,59 @@ app.get('/api', (req, res) => {
 });
 
 // Wildcard Route for React SPA
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/dist/index.html'));
+// Wildcard Route for React SPA with SEO Injection
+app.get('*', async (req, res) => {
+    const indexPath = path.join(__dirname, '../client/dist/index.html');
+    
+    // Check if it's a blog post request
+    if (req.path.startsWith('/blog/') && req.path.split('/').length > 2) {
+        try {
+            const slug = req.path.split('/').pop();
+            const post = await BlogPost.findOne({ slug });
+
+            if (post) {
+                // Read index.html
+                fs.readFile(indexPath, 'utf8', (err, htmlData) => {
+                    if (err) {
+                        console.error('Error reading index.html', err);
+                        return res.status(500).send('Server Error');
+                    }
+
+                    // Inject Metadata
+                    const title = post.title || 'Safe360 - Immersive Corporate Training';
+                    const description = post.metaDescription || post.content.replace(/<[^>]*>/g, '').substring(0, 160) + '...';
+                    // Ensure image is absolute URL if relative
+                    let image = post.image || 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=2078&auto=format&fit=crop';
+                    if (image.startsWith('/')) {
+                        image = `https://safe360.rajkumarnepal.com.np${image}`;
+                    }
+
+                    // Replace Meta Tags
+                    let injectedHtml = htmlData
+                        .replace('<title>Safe360</title>', `<title>${title} | Safe360</title>`)
+                        .replace(/content="Safe360 - Immersive Corporate Training"/g, `content="${title}"`)
+                        .replace(/content="Revolutionizing corporate training with immersive VR\/AR technologies and next-gen Learning Management Systems."/g, `content="${description}"`)
+                        .replace(/content="https:\/\/images.unsplash.com\/photo-1593508512255-86ab42a8e620\?q=80&w=2078&auto=format&fit=crop"/g, `content="${image}"`);
+                    
+                    // Also explicitly target OG and Twitter tags if the generic replace missed them (regex fallback)
+                    // The above simple replacements rely on strict string matching with the default index.html content.
+                    // For robustness, we can use regex to replace specific property contents.
+                    
+                    // Note: The simple replace above works if index.html exactly matches the string. 
+                    // To be safer, we can re-inject purely.
+                    
+                    return res.send(injectedHtml);
+                });
+                return;
+            }
+        } catch (error) {
+            console.error('SEO Injection Error:', error);
+            // Fallback to static serve on error
+        }
+    }
+
+    // Default Static Serve (Home, Login, etc.)
+    res.sendFile(indexPath);
 });
 
 // Global Error Handler
