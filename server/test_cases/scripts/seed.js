@@ -530,7 +530,8 @@ const seedData = async () => {
         const postsWithAuthor = blogPosts.map(post => ({
             ...post,
             author: adminUser._id,
-            visibility: 'public'
+            visibility: 'public',
+            publishedAt: post.createdAt // Critical for the 'publishedAt <= now' filter
         }));
 
         await BlogPost.insertMany(postsWithAuthor);

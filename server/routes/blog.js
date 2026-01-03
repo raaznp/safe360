@@ -301,6 +301,11 @@ router.put('/:id', protect, async (req, res) => {
                 post.author = author;
             }
 
+            // Auto-set publishedAt if publishing and not set
+            if (post.published && !post.publishedAt) {
+                post.publishedAt = new Date();
+            }
+
             if (content) {
                 post.readingTime = calculateReadingTime(content);
             }
