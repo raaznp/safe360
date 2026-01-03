@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             # Navigate to project directory
-            cd /path/to/your/project/Safe360 || exit
+            cd /home/opc/project/Safe360 || exit
 
             # Pull latest changes
             git pull origin main
@@ -37,4 +37,5 @@ jobs:
 
             # Reload PM2 to apply changes
             # Assumes PM2 is installed globally on the server
-            pm2 reload ecosystem.config.js --env production
+            pm2 reload
+            pm2 save
