@@ -100,6 +100,7 @@ const Users = () => {
                     <thead className="bg-gray-50 dark:bg-gray-700/50 text-gray-600 dark:text-gray-400 text-sm uppercase transition-colors">
                         <tr>
                             <th className="px-6 py-4 font-medium">Username</th>
+                            <th className="px-6 py-4 font-medium">Full Name</th>
                             <th className="px-6 py-4 font-medium">Email</th>
                             <th className="px-6 py-4 font-medium">Role</th>
                             <th className="px-6 py-4 font-medium">Post Count</th>
@@ -117,6 +118,9 @@ const Users = () => {
                                         </div>
                                         {user.username}
                                     </div>
+                                </td>
+                                <td className="px-6 py-4 text-gray-600 dark:text-gray-400 text-sm font-medium">
+                                    {user.fullName || '-'}
                                 </td>
                                 <td className="px-6 py-4 text-gray-600 dark:text-gray-400 text-sm">
                                     {user.email}
