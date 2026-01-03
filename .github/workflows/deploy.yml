@@ -21,7 +21,7 @@ jobs:
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
             # Navigate to project directory
-            cd /home/opc/project/Safe360 || exit
+            cd /home/opc/projects/Safe360 || exit
 
             # Pull latest changes
             git pull origin main
