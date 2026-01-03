@@ -20,22 +20,19 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SERVER_SSH_KEY }}
           script: |
-            # Navigate to project directory
-            cd /home/opc/project/Safe360 || exit
-
-            # Pull latest changes
-            git pull origin main
-
-            # Install server dependencies
-            cd server && npm install
-
-            # Install client dependencies and build
-            cd ../client && npm install && npm run build
-
-            # Go back to root
-            cd ..
-
-            # Reload PM2 to apply changes
-            # Assumes PM2 is installed globally on the server
-            pm2 reload
-            pm2 save
+            echo "1. Connecting successfully..."
+            whoami
+            pwd
+            
+            echo "2. Checking directory..."
+            ls -la /home/opc/project/Safe360
+            
+            # echo "3. Attempting Git..."
+            # cd /home/opc/project/Safe360 || exit
+            # git status
+            
+            # git pull origin main
+            # cd server && npm install
+            # cd ../client && npm install && npm run build
+            # cd ..
+            # pm2 reload ecosystem.config.js --env production
