@@ -76,7 +76,12 @@ app.get('*', async (req, res) => {
     // Check if it's a blog post request
     if (req.path.startsWith('/blog/') && req.path.split('/').length > 2) {
         try {
-            const slug = req.path.split('/').pop();
+            // Handle trailing slash and extraction
+            const cleanPath = req.path.endsWith('/') ? req.path.slice(0, -1) : req.path;
+            const slug = cleanPath.split('/').pop();
+            
+            console.log(`[SEO] Attempting injection for slug: ${slug}`); // Debug Log
+
             const post = await BlogPost.findOne({ slug });
 
             if (post) {
@@ -91,33 +96,38 @@ app.get('*', async (req, res) => {
                     const title = post.title || 'Safe360 - Immersive Corporate Training';
                     const description = post.metaDescription || post.content.replace(/<[^>]*>/g, '').substring(0, 160) + '...';
                     
+                    // Handle Image URL
                     let image = post.image || 'https://images.unsplash.com/photo-1593508512255-86ab42a8e620?q=80&w=2078&auto=format&fit=crop';
-                    if (image.startsWith('/')) {
+                    if (image && image.startsWith('/')) {
                         image = `https://safe360.rajkumarnepal.com.np${image}`;
                     }
 
-                    // Robust Regex Replacement
-                    // Matches <meta ... property="og:title" ... > globally, regardless of attribute order
+                    console.log(`[SEO] Injecting: ${title}`);
+
+                    // Robust Regex Replacement (Handles attributes order, whitespace, single/double quotes)
                     let injectedHtml = htmlData
-                        .replace(/<title>.*?<\/title>/, `<title>${title} | Safe360</title>`)
+                        // Title
+                        .replace(/<title>.*?<\/title>/i, `<title>${title} | Safe360</title>`)
                         
                         // Open Graph
-                        .replace(/<meta[^>]*property=["']og:title["'][^>]*>/gi, `<meta property="og:title" content="${title}" />`)
-                        .replace(/<meta[^>]*property=["']og:description["'][^>]*>/gi, `<meta property="og:description" content="${description}" />`)
-                        .replace(/<meta[^>]*property=["']og:image["'][^>]*>/gi, `<meta property="og:image" content="${image}" />`)
-                        .replace(/<meta[^>]*property=["']og:url["'][^>]*>/gi, `<meta property="og:url" content="https://safe360.rajkumarnepal.com.np/blog/${slug}" />`)
+                        .replace(/<meta\s+[^>]*property\s*=\s*["']og:title["'][^>]*>/gi, `<meta property="og:title" content="${title}" />`)
+                        .replace(/<meta\s+[^>]*property\s*=\s*["']og:description["'][^>]*>/gi, `<meta property="og:description" content="${description}" />`)
+                        .replace(/<meta\s+[^>]*property\s*=\s*["']og:image["'][^>]*>/gi, `<meta property="og:image" content="${image}" />`)
+                        .replace(/<meta\s+[^>]*property\s*=\s*["']og:url["'][^>]*>/gi, `<meta property="og:url" content="https://safe360.rajkumarnepal.com.np/blog/${slug}" />`)
                         
                         // Twitter
-                        .replace(/<meta[^>]*property=["']twitter:title["'][^>]*>/gi, `<meta property="twitter:title" content="${title}" />`)
-                        .replace(/<meta[^>]*property=["']twitter:description["'][^>]*>/gi, `<meta property="twitter:description" content="${description}" />`)
-                        .replace(/<meta[^>]*property=["']twitter:image["'][^>]*>/gi, `<meta property="twitter:image" content="${image}" />`)
+                        .replace(/<meta\s+[^>]*property\s*=\s*["']twitter:title["'][^>]*>/gi, `<meta property="twitter:title" content="${title}" />`)
+                        .replace(/<meta\s+[^>]*property\s*=\s*["']twitter:description["'][^>]*>/gi, `<meta property="twitter:description" content="${description}" />`)
+                        .replace(/<meta\s+[^>]*property\s*=\s*["']twitter:image["'][^>]*>/gi, `<meta property="twitter:image" content="${image}" />`)
                         
-                        // Basic Meta
-                        .replace(/<meta[^>]*name=["']description["'][^>]*>/gi, `<meta name="description" content="${description}" />`);
+                        // Description
+                        .replace(/<meta\s+[^>]*name\s*=\s*["']description["'][^>]*>/gi, `<meta name="description" content="${description}" />`);
                     
                     return res.send(injectedHtml);
                 });
                 return;
+            } else {
+                console.log(`[SEO] Post not found for slug: ${slug}`);
             }
         } catch (error) {
             console.error('SEO Injection Error:', error);
