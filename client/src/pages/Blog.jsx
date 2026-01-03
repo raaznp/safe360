@@ -140,7 +140,7 @@ const Blog = () => {
                                     <div className="p-6 flex-1 flex flex-col">
                                         <div className="flex items-center text-xs text-gray-500 dark:text-gray-400 mb-4 space-x-4">
                                             <span className="flex items-center"><Calendar className="h-3 w-3 mr-1" /> {new Date(post.createdAt).toLocaleDateString()}</span>
-                                            <Link to={`/blog?author=${encodeURIComponent(typeof post.author === 'object' ? post.author._id : post.author)}`} className="flex items-center hover:text-secondary transition-colors">
+                                            <Link to={`/blog?author=${encodeURIComponent(typeof post.author === 'object' ? post.author.username : post.author)}`} className="flex items-center hover:text-secondary transition-colors">
                                                 <User className="h-3 w-3 mr-1" /> 
                                                 {typeof post.author === 'object' ? (post.author.fullName || post.author.username) : (post.author || 'Safe360 Team')}
                                             </Link>

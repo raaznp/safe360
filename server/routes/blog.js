@@ -64,7 +64,25 @@ router.get('/', async (req, res) => {
         };
         
         if (tag) query.tags = tag;
-        if (author) query.author = author;
+        if (tag) query.tags = tag;
+        
+        if (author) {
+            // Check if author is ID or username
+            if (mongoose.Types.ObjectId.isValid(author)) {
+                query.author = author;
+            } else {
+                const User = require('../models/User');
+                const authorUser = await User.findOne({ username: author });
+                if (authorUser) {
+                    query.author = authorUser._id;
+                } else {
+                    // If username not found, match nothing (or handle appropriately)
+                    query.author = null; 
+                }
+            }
+        }
+
+        if (category) query.categories = category;
         if (category) query.categories = category;
 
         const totalPosts = await BlogPost.countDocuments(query);
